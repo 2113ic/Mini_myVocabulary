@@ -1,24 +1,63 @@
 <view class="container">
-    <view class="userinfo">
-        <block wx:if="{{canIUseOpenData}}">
-            <view class="userinfo-avatar" bindtap="bindViewTap">
-                <open-data type="userAvatarUrl"></open-data>
-            </view>
-            <open-data type="userNickName"></open-data>
-        </block>
-        <block wx:elif="{{!hasUserInfo}}">
-            <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile">获取头像昵称</button>
-            <button wx:elif="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">
-                获取头像昵称
-            </button>
-            <view wx:else>请使用1.4.4及以上版本基础库</view>
-        </block>
-        <block wx:else>
-            <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-            <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-        </block>
+  <page-meta>
+    <navigation-bar 
+      title="{{nbTitle}}" 
+      loading="{{nbLoading}}" 
+      front-color="{{nbFrontColor}}" 
+      background-color="{{nbBackgroundColor}}" 
+      color-animation-duration="2000"
+      color-animation-timing-func="easeIn"/>
+  </page-meta>
+
+  <!-- 头 -->
+  <view class="header">
+    <!-- 导航 -->
+    <view class="nav">
+      <navigator class="nav-item" open-type="switchTab" url="/pages/review/review">复习</navigator>
+      <navigator class="nav-item nav-focus" open-type="switchTab" url="/pages/index/index">记录</navigator>
+      <navigator class="nav-item" open-type="switchTab" url="/pages/import/import">导入</navigator>
     </view>
-    <view class="usermotto">
-        <text class="user-motto">{{motto}}</text>
+    <icon class="icon-down" type="download" size="23"></icon>
+  </view>
+
+  <!-- 主体 -->
+  <view class="main">
+
+    <!-- 时间线项模板 -->
+    <template name="lineTime-item">
+      <view class="lineTime-item">
+        <view class="icon-mark icon-mark_{{r}}"></view>
+        <view class="lineTime-container">
+          <text class="lineTime-title">{{length > 0 ? d : "开始记录单词吧！"}}</text>
+          <view class="lineTime-content">
+            <text 
+              wx:if="{{length > 0}}"
+              class="lineTime-word" 
+              wx:for="{{wl}}" 
+              data-expression="{{item.e}}">
+              {{item.w}}
+            </text>
+          </view>
+        </view>
+      </view>
+    </template>
+
+    <!-- 时间线 -->
+    <view class="lineTime">
+      <!-- 默认 -->
+      <template 
+        hidden="{{wordData.length >0 ? true : false}}" 
+        is="lineTime-item" 
+        data="{{length: -1}}">
+      </template>
+      
+      <!-- 数据 -->
+      <template 
+        wx:if="{{wordData>0 ? true : false}}"
+        wx:for="{{wordData}}" 
+        is="lineTime-item" 
+        data="{{...item,length: wordData.length}}">
+      </template>
     </view>
+  </view>
 </view>

@@ -1,0 +1,22 @@
+<view class="container">
+  <page-meta>
+    <navigation-bar 
+      title="{{nbTitle}}" 
+      loading="{{nbLoading}}" 
+      front-color="{{nbFrontColor}}" 
+      background-color="{{nbBackgroundColor}}" 
+      color-animation-duration="2000"
+      color-animation-timing-func="easeIn"/>
+  </page-meta>
+  
+  <!-- 头 -->
+  <view class="header">
+    <!-- 导航 -->
+    <view class="nav">
+      <navigator class="nav-item" open-type="switchTab" url="/pages/review/review">复习</navigator>
+      <navigator class="nav-item" open-type="switchTab" url="/pages/index/index">记录</navigator>
+      <navigator class="nav-item nav-focus" open-type="switchTab" url="/pages/import/import">导入</navigator>
+    </view>
+    <icon class="icon-down" type="download" size="23"></icon>
+  </view>
+</view>

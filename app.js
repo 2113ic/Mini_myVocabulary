@@ -1,19 +1,24 @@
 // app.js
 App({
-    onLaunch() {
-        // 展示本地存储能力
-        const logs = wx.getStorageSync('logs') || []
-        logs.unshift(Date.now())
-        wx.setStorageSync('logs', logs)
 
-        // 登录
-        wx.login({
-            success: res => {
-                // 发送 res.code 到后台换取 openId, sessionKey, unionId
-            }
-        })
-    },
-    globalData: {
-        userInfo: null
-    }
+    // 监听小程序初始化
+    onLaunch() {},
+
+    // 监听小程序启动或切前台
+    onShown() {},
+
+    // 监听小程序切后台
+    onHidden() {},
+
+    // 错误监听函数
+    onError(err) {},
+
+    // 页面不存在监听函数
+    onPageNotFound(page) {},
+
+    // 未处理的 Promise 拒绝事件监听函数
+    onUnhandledRejection() {},
+
+    // 	监听系统主题变化
+    onThemChanged() {},
 })

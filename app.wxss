@@ -1,11 +1,64 @@
 /**app.wxss**/
+/* me */
+:root {
+    --dark: #4c5161;
+    --light: #f7f9fa;
+    --white: #fff;
+    --white-hover: #F2F2F2;
+    --primary: #2A80EB;
+    --gay: #a2a9b6;
+    --bule: #2a80eb;
+    --danger: #EB4646;
+    --warning: #F59B00;
+    --normal: #4C5161;
+    --disabled: #A2A9B6;
+    --success: #1CAD70;
+    --primary-hover: #287ADF;
+    --success-hover: #1DA36A;
+    --warning-hover: #E89301;
+    --danger-hover: #DF4342;
+}
 
 .container {
-    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    height: 100vh;
+    background-color: #f7f9fa;
+}
+
+/* header */
+.header {
+    display: flex;
     justify-content: space-between;
-    padding: 200rpx 0;
-    box-sizing: border-box;
+    align-items: center;
+}
+
+/* nav */
+.nav {
+    display: flex;
+    align-items: center;
+    height: 96rpx;
+}
+
+.nav-item {
+    position: relative;
+    font-size: 36rpx;
+    color: #4c5161;
+    font-weight: bold;
+    margin-left: 32rpx;
+}
+
+.nav-focus::before {
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    content: "";
+    width: 100%;
+    border-bottom: 4px solid #2a80eb;
+    border-radius: 2px;
+}
+
+/* icon-down */
+.icon-down {
+    margin-right: 32rpx;
 }
