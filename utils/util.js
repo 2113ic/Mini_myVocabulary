@@ -1,7 +1,5 @@
-const $ = selector => document.querySelector(selector);
-const $$ = selector => document.querySelectorAll(selector);
-const setLocalStorage = (key, value) => window.localStorage.setItem(key, value);
-const getLocalStorage = (key) => window.localStorage.getItem(key); 
+const setStorage = (key, value) => wx.setStorageSync(key,value);
+const getStorage = (key) => wx.getStorageSync(key); 
 
 /**
  * 异步读取文件
@@ -17,41 +15,20 @@ function readFileAsync(file) {
 }
 
 /**
- * 克隆节点
- * @param {element} node 需要克隆的节点
- * @param {number} num 克隆数量
- * @param {Boolean} deep 可选。克隆深度。默认为false
- * @param {element} parentNode 可选。需要克隆到的节点。默认值为父节点。
- * @param {pattern} pattern 可选。插入方式。默认为添加到末尾。
+ * 获取json文件的数据。
+ * @param {String} url url
+ * @returns p
  */
-function cloneNode(node, num, deep, parentNode, pattern) {
-    const container = parentNode || node.parentNode;
-    const pat = pattern || "append";
-    deep = deep || false;
-    for (let i = 0; i < num; i++) {
-        const cloneNode = node.cloneNode(deep);
-        container[pat](cloneNode);
-    }
+ async function getJsonData(url) {
+    return await (await fetch(url)).json();
 }
 
 /**
  * 轻提示
  * @param {String} text 需要显示的文本。
  */
-function showTip(text) {
-    layui.use('layer', () => layui.layer.msg(text));
-}
-
-/**
- * 为元素设置样式
- * @param {element} ele 元素
- * @param {Object} obj 包含键值对的对象。
- */
-function elementStyle(ele, obj) {
-    Object.entries(obj).forEach((item) => {
-        const [key, value] = item;
-        ele.style[key] = value;
-    });
+function showTip(text, icon){
+    wx.showToast({title: text,icon: icon||"none"});
 }
 
 /**
@@ -60,7 +37,9 @@ function elementStyle(ele, obj) {
  */
 function stringToAudio(str) {
     const url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text='" + encodeURI(str);
-    new Audio(url).play();
+    wx.playBackgroundAudio({
+        dataUrl: url,
+    })
 }
 
 /**
@@ -90,11 +69,9 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min; //不含最大值，含最小值
 }
 
-/**
- * 获取json文件的数据。
- * @param {String} url url
- * @returns p
- */
-async function getJsonData(url) {
-    return await (await fetch(url)).json();
-}
+module.exports.setStorage = setStorage;
+module.exports.getStorage = getStorage;
+module.exports.showTip= showTip;
+module.exports.getNowDate= getNowDate;
+module.exports.getRandomInt= getRandomInt;
+module.exports.stringToAudio= stringToAudio;

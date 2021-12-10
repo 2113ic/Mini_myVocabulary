@@ -1,14 +1,4 @@
 <view class="container">
-  <page-meta>
-    <navigation-bar 
-      title="{{nbTitle}}" 
-      loading="{{nbLoading}}" 
-      front-color="{{nbFrontColor}}" 
-      background-color="{{nbBackgroundColor}}" 
-      color-animation-duration="2000"
-      color-animation-timing-func="easeIn"/>
-  </page-meta>
-  
   <!-- 头 -->
   <view class="header">
     <!-- 导航 -->
@@ -17,6 +7,46 @@
       <navigator class="nav-item" open-type="switchTab" url="/pages/index/index">记录</navigator>
       <navigator class="nav-item" open-type="switchTab" url="/pages/import/import">导入</navigator>
     </view>
-    <icon class="icon-down" type="download" size="23"></icon>
+  </view>
+
+  <!-- 主体 -->
+  <view class="main">
+
+    <view class="main-show">
+      <!-- main-top -->
+      <view class="main-show--top">
+        <picker 
+          class="showModel" 
+          bindchange="showModelChange" 
+          value="{{modelIndex}}" 
+          range="{{modelValue}}">
+            <view class="showModel-text">{{modelValue[modelIndex]}}</view>
+        </picker>
+      </view>
+  
+      <!-- main-show -->
+      <view 
+        bindtap="show"
+        class="show-value" 
+        data-show="{{show}}" 
+        data-answer="{{answer}}">
+      
+        <view class="main-show--tools">
+          <image src="../img/{{randomShowSvg}}.svg" catchtap="togglesIconShow"/>
+          <image src="../img/play.svg" catchtap="playWord"/>
+        </view>
+      </view>
+    </view>
+
+    <!-- main-bottom -->
+    <view class="main-form">
+      <textarea 
+        bindinput="reviewInputHandle"
+        id="review-input" 
+        value="{{reviewInputValue}}"
+        cursor-spacing="60"
+        show-confirm-bar=""
+        placeholder="请输入..." />
+    </view>
   </view>
 </view>

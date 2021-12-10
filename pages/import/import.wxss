@@ -1,0 +1,17 @@
+/**main**/
+.main {
+    position: relative;
+    height: 100vh;
+}
+
+/* openFile */
+.openFile {
+    position: absolute;
+    top: calc(50% - 40px);
+    left: 50%;
+
+    font-size: 36rpx;
+    color: #2A80EB;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}

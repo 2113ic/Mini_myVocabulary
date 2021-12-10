@@ -1,23 +1,27 @@
 <view class="container">
-  <page-meta>
-    <navigation-bar 
-      title="{{nbTitle}}" 
-      loading="{{nbLoading}}" 
-      front-color="{{nbFrontColor}}" 
-      background-color="{{nbBackgroundColor}}" 
-      color-animation-duration="2000"
-      color-animation-timing-func="easeIn"/>
-  </page-meta>
-
   <!-- 头 -->
-  <view class="header">
+  <view class="header" style="{{headerStyle}}">
     <!-- 导航 -->
     <view class="nav">
       <navigator class="nav-item" open-type="switchTab" url="/pages/review/review">复习</navigator>
       <navigator class="nav-item nav-focus" open-type="switchTab" url="/pages/index/index">记录</navigator>
       <navigator class="nav-item" open-type="switchTab" url="/pages/import/import">导入</navigator>
     </view>
-    <icon class="icon-down" type="download" size="23"></icon>
+
+    <!-- 
+      将数据写入文件并导出到本地。
+      目前小程序暂不支持这种做法，
+      只能从后端生成文件地址后，
+      利用 wx.downloadFile 这个api实现。
+      本着做一个静态小程序的初心，
+      只能暂时放弃这个导出单词数据的功能了。
+    -->
+    <!-- <icon class="icon-down" type="download" size="23" bindtap="toggleShowStatus"></icon>
+    <view class="icon-down_container" hidden="{{showStatus}}">
+      <view class="icon-down_item" bindtap="downVocabularyData">词汇量</view>
+      <view class="icon-down_item" bindtap="downWordData">单词</view>
+      <view class="icon-down_item" bindtap="downExprData">解释</view>
+    </view> -->
   </view>
 
   <!-- 主体 -->
@@ -26,38 +30,79 @@
     <!-- 时间线项模板 -->
     <template name="lineTime-item">
       <view class="lineTime-item">
-        <view class="icon-mark icon-mark_{{r}}"></view>
+        <view class="icon-mark icon-mark_{{r||false}}"></view>
         <view class="lineTime-container">
-          <text class="lineTime-title">{{length > 0 ? d : "开始记录单词吧！"}}</text>
-          <view class="lineTime-content">
+          <text 
+            class="lineTime-title" 
+            bindtap="markWordGroup" 
+            data-date="{{d}}">{{length > 0 ? d : "开始记录单词吧！"}}</text>
+          <view class="lineTime-content" data-expr="{{ws}}词" bindtap="showExpression" >
             <text 
               wx:if="{{length > 0}}"
               class="lineTime-word" 
               wx:for="{{wl}}" 
-              data-expression="{{item.e}}">
-              {{item.w}}
-            </text>
+              data-expr="{{item.e}}">{{item.w}}</text>
           </view>
         </view>
       </view>
     </template>
 
-    <!-- 时间线 -->
-    <view class="lineTime">
-      <!-- 默认 -->
-      <template 
-        hidden="{{wordData.length >0 ? true : false}}" 
-        is="lineTime-item" 
-        data="{{length: -1}}">
-      </template>
+    <!-- 记录 -->
+    <view class="record">
+      <input 
+        bindinput="setRecordValue" 
+        id="record_word" 
+        value="{{record_word}}"
+        auto-focus placeholder="单词"/>
+      <textarea 
+        bindinput="setRecordValue"
+        id="record_expression" 
+        value="{{record_expression}}"
+        confirm-hold="true" 
+        show-confirm-bar=""
+        placeholder="解释..."/>
+      <button bindtap="addWordHandler" id="record_btn" type="default" size="mini">记录</button>
+    </view>
+
+    <view class="main-lineTime">
+      <!-- 时间线 -->
+      <view class="lineTime">
+        <!-- 默认 -->
+        <template 
+          wx:if="{{wordData.length == 0}}" 
+          is="lineTime-item" 
+          data="{{length: -1}}">
+        </template>
+        
+        <!-- 数据 -->
+        <template 
+          wx:if="{{wordData.length > 0}}"
+          wx:for="{{pageData}}" 
+          wx:key="d"
+          is="lineTime-item" 
+          data="{{...item, length: pageData.length}}">
+        </template>
+
+      </view>
       
-      <!-- 数据 -->
-      <template 
-        wx:if="{{wordData>0 ? true : false}}"
-        wx:for="{{wordData}}" 
-        is="lineTime-item" 
-        data="{{...item,length: wordData.length}}">
+      <!-- 分页 -->
+      <template name="pagination" >
+        <view class="page-item">{{curr}}/{{pages}}</view>
       </template>
+
+      <view id="pagination" wx:if="{{pagination.count != 0}}">
+        <view 
+          bindtap="onPrev" 
+          class="prev prev-{{pagination.curr == 1}}"
+          data-page="{{pagination.prev}}">上一页</view>
+        <template 
+          is="pagination" 
+          data="{{...pagination}}"></template>
+        <view 
+          bindtap="onNext" 
+          class="next next-{{pagination.curr == pagination.pages}}" 
+          data-page="{{pagination.next}}">下一页</view>
+      </view>
     </view>
   </view>
 </view>

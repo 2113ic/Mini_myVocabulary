@@ -23,9 +23,10 @@
 	},
 	"window": {
 		"backgroundTextStyle": "dark",
-		"navigationBarBackgroundColor": "#fff",
+		"navigationBarBackgroundColor": "#4c5161",
 		"navigationBarTitleText": "我的词汇量",
-		"navigationBarTextStyle": "black"
+		"navigationBarTextStyle": "white",
+		"enablePullDownRefresh":true
 	},
 	"style": "v2",
 	"sitemapLocation": "sitemap.json",
